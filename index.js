@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const port = 3000
 const bodyParser = require('body-parser');
+
+const config = require('./config/key');
+
 const { User } = require("./models/User");
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -9,12 +12,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://WonKim:11223344@cluster0.qw1qyc6.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndexes: true, useFindAndModify: false    
 }).then(() => console.log('MongoDB connected..'))
     .catch(err => console.log(err))
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => res.send('Hello World! wow!!'))
 
 app.post('/register', (req, res) => {
 
