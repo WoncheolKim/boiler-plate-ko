@@ -32,7 +32,32 @@ app.post('/register', (req, res) =>{
 
 })
 
+app.post('/login', (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if(!user) {
+      return res.json({
+        loginSuccess: false,
+        message: "No user"
+      })
+    }
+
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (!isMatch)
+        return res.json({ loginSuccess: false, message: "Wrong Password"})
+        
+        // generate new token when the password is correct
+        user.generateToken((err, user) => {
+          if (err) return res.status(400).send(err);
+
+        })
+    })
+
+  })
+
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+  
